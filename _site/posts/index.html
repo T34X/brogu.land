@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My versy first Post.</title>
+    <link rel="stylesheet" href="../static/css/tailwind.css">
+</head>
+<body>
+    <header class="container mx-auto ">
+        <div class="flex justify-between pt-5">
+            <div class="">
+                <span class="font-bold text-3xl"><a href="">brogu.land</a></span>
+            </div>
+        </div>
+    </header>
+    <div class="container mx-auto my-5">
+    <h1>Very first post after development.</h1>
+<h2>Development is not finished yet.</h2>
+
+    </div>
+    <script >
+    let html = document.getElementsByTagName('html');
+let class_name = html[0].className;
+
+let mode_switcher = document.getElementsByClassName('mode');
+
+if(class_name=="dark") document.getElementsByClassName('mode')[0].innerHTML = "Light Mode."
+else mode_switcher[0].innerHTML = "Dark Mode";
+
+function changeMode(){
+    let html = document.getElementsByTagName('html');
+    let class_name = html[0].className;
+    let mode_switcher = document.getElementsByClassName('mode');
+    if (class_name=="dark"){
+        html[0].className = "light"
+    }else{
+        html[0].className = "dark"
+    }
+}
+
+window.onload = function() {
+    document.getElementsByTagName("button")[0].addEventListener('click',
+    changeMode)
+}</script>
+</body>
+</html>
