@@ -1,8 +1,8 @@
-import lume from "lume/mod.ts";
-import tailwindcss from "lume/plugins/tailwindcss.ts";
-import mdx from "lume/plugins/mdx.ts";
-import postcss from "lume/plugins/postcss.ts";
-import jsx from "lume/plugins/jsx.ts";
+import lume from "https://deno.land/x/lume@v1.15.2/mod.ts";
+import tailwindcss from "https://deno.land/x/lume@v1.15.2/plugins/tailwindcss.ts";
+import mdx from "https://deno.land/x/lume@v1.15.2/plugins/mdx.ts";
+import postcss from "https://deno.land/x/lume@v1.15.2/plugins/postcss.ts";
+import jsx from "https://deno.land/x/lume@v1.15.2/plugins/jsx.ts";
 
 const site = lume();
 
