@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>brogu.land - My personal blog website.</title>
+    <title>Disable transitions on theme toggle</title>
     <link rel="stylesheet" href="../../static/css/style.css">
     <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/user6879/website/main/static/favicon.ico"/>
 </head>
@@ -24,8 +24,42 @@ viewBox="0 0 32 32">
         </div>
     </header>
     <div class="container mx-auto my-5">
-    <h1>This text was written while WIP.</h1>
-<p>I like Deno so much.</p>
+    <p>It's difficult to transition between themes smoothly. Adding a CSS <code>transition</code> to every element negatively impacts rendering performance, and it also won't
+work for images, icons, and CSS properties that don't support transitions.</p>
+<p>Instead, we can temporarily remove transitions from all elements so that toggling themes feels snappy and consistent. We'll manually create a stylesheet that
+disables transitions:</p>
+<pre><code class="language-js">const css = document.createElement('style')
+css.type = 'text/css'
+css.appendChild(
+  document.createTextNode(
+    `* {
+       -webkit-transition: none !important;
+       -moz-transition: none !important;
+       -o-transition: none !important;
+       -ms-transition: none !important;
+       transition: none !important;
+    }`
+  )
+)
+document.head.appendChild(css)
+</code></pre>
+<p>Note that we need to manually specify browser prefixes, as this CSS isn't run through any preprocessing.</p>
+<p>After changing the theme (usually this involves toggling a class on <code>&lt;body&gt;</code>), we force a browser repaint and remove the stylesheet:</p>
+<pre><code class="language-js">// Toggle the theme here...
+
+// Calling getComputedStyle forces the browser to redraw
+const _ = window.getComputedStyle(css).opacity
+document.head.removeChild(css)
+</code></pre>
+<p>Calling <code>requestAnimationFrame</code> before removing the stylesheet seemed to work at first, but it was unreliable and elements still transitioned. Using
+<code>getComputedStyle</code> works reliably on every major browser, because it forcibly
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle">applies all active stylesheets</a>.</p>
+<p>Before:</p>
+<p><img src="/blog/disable-theme-transitions/before.gif" alt="Toggling between light and dark theme, with elements flashing"></p>
+<p>After (or press <kbd>t</kbd> to try it yourself):</p>
+<p><img src="/blog/disable-theme-transitions/after.gif" alt="Toggling between light and dark theme, with no elements flashing"></p>
+<hr>
+<p>Thanks to <a href="https://twitter.com/rauchg">Guillermo</a> for the idea!</p>
 
     </div>
 

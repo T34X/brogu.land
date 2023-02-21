@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>brogu.land - My personal blog website.</title>
+    <title>Understanding package.json</title>
     <link rel="stylesheet" href="../../static/css/style.css">
     <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/user6879/website/main/static/favicon.ico"/>
 </head>
@@ -24,8 +24,32 @@ viewBox="0 0 32 32">
         </div>
     </header>
     <div class="container mx-auto my-5">
-    <h1>This text was written while WIP.</h1>
-<p>I like Deno so much.</p>
+    <p>I began my Computer Science degree with an intensive introduction course in C. We used makefiles to compile and run each of our assignments.</p>
+<p>When I started learning modern web development in early 2018, I had no idea what Node.js or NPM was. My idea of building website involved writing HTML, CSS, and
+occasionally including a <code>script</code> tag. A year or so later, I'm finally comfortable with modern techniques.</p>
+<p>A major source of confusion for me was <code>package.json</code>. In short, <code>package.json</code> is a makefile for the JavaScript environment, with some caveats.</p>
+<h3>Package Scripts</h3>
+<p>Package managers like Yarn and NPM also serve as script runners for JavaScript projects. Unlike makefiles, scripts in <code>package.json</code> run in a special
+environment.</p>
+<p>Packages in <code>node_modules</code> that define an executable will have that executable appended to the environment PATH before running any scripts. This can be
+confusing. Let's see an example:</p>
+<pre><code class="language-json">&quot;devDependencies&quot;: {
+  &quot;eslint&quot;: &quot;1.0.0&quot;
+},
+&quot;scripts&quot;: {
+  &quot;lint&quot;: &quot;eslint .&quot;
+}
+</code></pre>
+<p>Running <code>yarn lint</code> will work correctly. However, just running <code>eslint .</code> from the command line will fail!<sup>1</sup> This was extremely confusing at first,
+did I have ESLint installed or not?</p>
+<p>The package script will work because Yarn recognizes that the ESLint dependency includes an executable, and appends it to the environment PATH when running any
+scripts.</p>
+<p>This is a great advantage of the modular nature of the JavaScript ecosystem. You don't have to install any global scripts or clutter up your PATH to work with
+JavaScript projects, just <code>yarn install</code>.</p>
+<hr>
+<ol>
+<li>Unless you have installed ESLint globally, which does add the executable to your PATH (<code>yarn global add eslint</code>)</li>
+</ol>
 
     </div>
 

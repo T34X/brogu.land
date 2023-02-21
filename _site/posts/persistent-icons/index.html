@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>brogu.land - My personal blog website.</title>
+    <title>Persistent Custom App Icons</title>
     <link rel="stylesheet" href="../../static/css/style.css">
     <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/user6879/website/main/static/favicon.ico"/>
 </head>
@@ -24,8 +24,23 @@ viewBox="0 0 32 32">
         </div>
     </header>
     <div class="container mx-auto my-5">
-    <h1>This text was written while WIP.</h1>
-<p>I like Deno so much.</p>
+    <p>I created <a href="https://dusk.now.sh">Dusk</a> to make my dock look more visually harmonious. <a href="https://freemacsoft.net/liteicon/">LiteIcon</a> does a great job of
+automating the icon changing process, but every time I opened Discord, the dock icon reverted back to default. Not cool.</p>
+<p><img src="https://katsuki.moe/blog/persistent-icons/dock-1.png" alt="Original Discord Icon in Dock"></p>
+<p>It happens to other Electron applications (Hyper, VSCode) over time. Even Safari reverts back occasionally. It's frustratingly ugly. Let's fix it.</p>
+<p>Find the application in Finder and right click to &quot;Show Package Contents&quot;.</p>
+<p><img src="https://katsuki.moe/blog/persistent-icons/show.png" alt="Show Package Contents on Discord.app"></p>
+<p>Navigate to <code>Contents/Resources/</code>. Here, <code>electron.icns</code> is the culprit. Let's replace it with our custom icon.</p>
+<p><img src="https://katsuki.moe/blog/persistent-icons/icns.png" alt="electron.icns in Contents/Resources Folder"></p>
+<p>We'll need to convert our custom <code>.png</code> icon from Dusk (or anywhere else) to an <code>.icns</code> file. MacOS ships with the command line tool <code>sips</code> to help with this.</p>
+<p>Run the following from the command line, replacing ICON as needed.</p>
+<pre><code class="language-bash">sips -s format icns ICON.png --out ICON.icns
+</code></pre>
+<p>Move your new <code>.icns</code> file into the previously opened <code>Resources/</code> folder. I like to save the old icon by renaming it, just in case I have to revert later.
+Rename your new file to match the old (in this case, <code>electron.icns</code>).</p>
+<p><img src="https://katsuki.moe/blog/persistent-icons/fixed-icns.png" alt="New electron.icns File"></p>
+<p>Restart the app, and your custom application icon should persist!</p>
+<p><img src="https://katsuki.moe/blog/persistent-icons/dock-2.png" alt="Much better"></p>
 
     </div>
 

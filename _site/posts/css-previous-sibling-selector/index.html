@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Previous Sibling Selector</title>
+    <link rel="stylesheet" href="../../static/css/style.css">
+    <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/user6879/website/main/static/favicon.ico"/>
+</head>
+<body>
+    <header class="container mx-auto ">
+        <div class="flex justify-between pt-5">
+            <div class="">
+                <span class="font-bold text-3xl"><a href="https://brogu.deno.dev/">brogu.land</a></span>
+            </div>
+            <div>
+            <a href="https://github.com/user6879/brogu.land"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+width="32" height="32"
+viewBox="0 0 32 32">
+<path fill-rule="evenodd" d="M 16 4 C 9.371094 4 4 9.371094 4 16 C 4 21.300781 7.4375 25.800781 12.207031 27.386719 C 12.808594 27.496094 13.027344 27.128906 13.027344 26.808594 C 13.027344 26.523438 13.015625 25.769531 13.011719 24.769531 C 9.671875 25.492188 8.96875 23.160156 8.96875 23.160156 C 8.421875 21.773438 7.636719 21.402344 7.636719 21.402344 C 6.546875 20.660156 7.71875 20.675781 7.71875 20.675781 C 8.921875 20.761719 9.554688 21.910156 9.554688 21.910156 C 10.625 23.746094 12.363281 23.214844 13.046875 22.910156 C 13.15625 22.132813 13.46875 21.605469 13.808594 21.304688 C 11.144531 21.003906 8.34375 19.972656 8.34375 15.375 C 8.34375 14.0625 8.8125 12.992188 9.578125 12.152344 C 9.457031 11.851563 9.042969 10.628906 9.695313 8.976563 C 9.695313 8.976563 10.703125 8.65625 12.996094 10.207031 C 13.953125 9.941406 14.980469 9.808594 16 9.804688 C 17.019531 9.808594 18.046875 9.941406 19.003906 10.207031 C 21.296875 8.65625 22.300781 8.976563 22.300781 8.976563 C 22.957031 10.628906 22.546875 11.851563 22.421875 12.152344 C 23.191406 12.992188 23.652344 14.0625 23.652344 15.375 C 23.652344 19.984375 20.847656 20.996094 18.175781 21.296875 C 18.605469 21.664063 18.988281 22.398438 18.988281 23.515625 C 18.988281 25.121094 18.976563 26.414063 18.976563 26.808594 C 18.976563 27.128906 19.191406 27.503906 19.800781 27.386719 C 24.566406 25.796875 28 21.300781 28 16 C 28 9.371094 22.628906 4 16 4 Z"></path>
+</svg></a>
+            </div>
+        </div>
+    </header>
+    <div class="container mx-auto my-5">
+    <p>There is no previous sibling selector in CSS. Instead, we can achieve the same behavior by using flexbox and the <code>order</code> property.</p>
+<p>Let's say you're adding a prefix to an input, and would like to style the prefix when the input is focused. If you read from left to right and top to bottom
+(English), you likely structure your DOM like that too:</p>
+<pre><code class="language-html">&lt;div class=&quot;container&quot;&gt;
+  &lt;div class=&quot;prefix&quot;&gt;https://&lt;/div&gt;
+  &lt;input type=&quot;text&quot; /&gt;
+&lt;/div&gt;
+</code></pre>
+<div class="example">
+  <div class="container">
+    <div class="prefix">https://</div>
+    <input type="text" />
+  </div>
+</div>
+<p>In this markup, there's no way to target the <code>.prefix</code> class using <code>input:focus</code>, because we have no preceding selector. Instead, we can rewrite the DOM
+structure so that prefix appears <em>after</em> the input:</p>
+<pre><code class="language-html">&lt;div class=&quot;container&quot;&gt;
+  &lt;input type=&quot;text&quot; /&gt;
+  &lt;div class=&quot;prefix&quot;&gt;https://&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>And use flexbox to change the order of appearance:</p>
+<pre><code class="language-css">.container {
+  display: flex;
+}
+
+.container input {
+  order: 1;
+}
+
+.container .prefix {
+  order: 2;
+}
+</code></pre>
+<p>Now you can select the prefix using the sibling selector:</p>
+<pre><code class="language-css">.container input:focus + .prefix {
+  /* Focus styles... */
+}
+</code></pre>
+<div class="example">
+  <div class="container fixed">
+    <input type="text" />
+    <div class="prefix">https://</div>
+  </div>
+</div>
+<p>In the case of an input, the simple solution is to use <a href="https://caniuse.com/#search=focus-within"><code>:focus-within</code></a>, which has good browser support but is still
+experimental. Maybe you have other use cases for this trick though, <a href="https://twitter.com/katsuki-yuri">let me know</a>!</p>
+<hr>
+<p>This post is inspired by my own work on inputs, and this paragraph:</p>
+<blockquote>
+<p>Unfortunately, trying to use <code>:focus</code> limits what you can do: you can style the input or siblings that come after the input… but that’s it. —
+<a href="https://exogen.github.io/blog/focus-state">Initializing focus state in React</a></p>
+</blockquote>
+<style>
+  .example {
+    border-radius: var(--radius);
+    background: var(--lighter-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--gap);
+  }
+
+  .example .container {
+    display: flex;
+    align-items: center;
+  }
+
+  .example input {
+    height: 2.5rem;
+    font-size: 1rem;
+    border-radius: 0 var(--inline-radius) var(--inline-radius) 0;
+    background: var(--bg);
+    color: var(--fg);
+    border: 1px solid var(--light-gray);
+    padding: 0 var(--gap-half);
+    outline: none;
+    transition: border-color var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .example input:focus {
+    border-color: var(--gray);
+  }
+
+  .example .prefix {
+    background: var(--lightest-gray);
+    border-radius: var(--inline-radius) 0 0 var(--inline-radius);
+    padding: 0 var(--gap-half);
+    height: 2.5rem;
+    font-size: 1rem;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--light-gray);
+    border-right: 0;
+    user-select: none;
+    color: var(--gray);
+    transition: color var(--transition);
+    margin: 0;
+  }
+
+  .example .container.fixed input {
+    order: 1;
+  }
+
+  .example .container.fixed .prefix {
+    order: 0;
+  }
+
+  .example .container.fixed input:focus + .prefix {
+    color: var(--fg);
+  }
+</style>
+
+    </div>
+
+</body>
+</html>
